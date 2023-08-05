@@ -90,7 +90,7 @@ class VideoReader:
 
                 for location in face_locations:
                     top, right, bottom, left = location
-                    cv2.rectangle(frame, [left, top], [right, bottom], (255, 0, 0), 2)
+                    cv2.rectangle(frame, [left, top], [right, bottom], (0, 255, 0), 2)
                     face_crops.append(frame[top:bottom, left:right, ...])
 
             if self.identify_faces:
@@ -129,6 +129,9 @@ class VideoReader:
                                 ),
                                 img=face_crops[i],
                             )
+                            # write the identity names on the frame
+                            top, right, bottom, left = face_locations[i]
+                            cv2.putText(frame, name, (left, bottom + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 3)
 
                     elif len(self.identity_encodings) > 0:
                         # if there are previous ids in the id encodings
@@ -179,6 +182,10 @@ class VideoReader:
                                     img=face_crops[i],
                                 )
 
+                                # write the identity names on the frame
+                                top, right, bottom, left = face_locations[i]
+                                cv2.putText(frame, name, (left, bottom + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 3)
+
                             else:
                                 # write the image in that dir
                                 name = selected_id[0]
@@ -193,6 +200,10 @@ class VideoReader:
                                     ),
                                     img=face_crops[i],
                                 )
+                                # write the identity names on the frame
+                                top, right, bottom, left = face_locations[i]
+                                cv2.putText(frame, name, (left, bottom + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 3)
+
                                 # update the count and keep the Running Mean of the id-encoding
                                 self.identity_encodings[name] *= self.count_id_enc[name]
                                 self.identity_encodings[name] += cur_encoding
