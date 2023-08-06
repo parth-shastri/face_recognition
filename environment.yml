@@ -1,7 +1,7 @@
 name: face_recognition
 channels:
   - defaults
-# dependencies:
+dependencies:
 #   - ca-certificates=2023.05.30=hca03da5_0
 #   - libcxx=14.0.6=h848a8c0_0
 #   - libffi=3.4.4=hca03da5_0
