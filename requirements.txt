@@ -1,3 +1,4 @@
+setuptools
 dlib==19.24.2
 numpy==1.25.2
 opencv_python==4.8.0.74
