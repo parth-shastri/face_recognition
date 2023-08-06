@@ -9,6 +9,8 @@ dependencies:
 #   - ncurses=6.4=h313beb8_0
 #   - openssl=3.0.9=h1a28f6b_0
   - pip=23.2.1
+  - cmake==3.21.1
+  - dlib
   # - python=3.9.17
 #   - readline=8.2=h1a28f6b_0
 #   - setuptools=68.0.0
@@ -22,5 +24,4 @@ dependencies:
       - opencv_python==4.8.0.74
       - Pillow==9.5.0
       - streamlit==1.25.0
-      - dlib
 prefix: /Users/parthshastri/anaconda3/envs/face_recognition
