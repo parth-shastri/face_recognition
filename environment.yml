@@ -1,4 +1,4 @@
-name: face_recognition
+name: face_recognition_test
 channels:
   - defaults
   - conda-forge
@@ -8,13 +8,13 @@ dependencies:
 #   - libffi=3.4.4=hca03da5_0
 #   - ncurses=6.4=h313beb8_0
 #   - openssl=3.0.9=h1a28f6b_0
-  - pip=23.2.1
-  - python=3.9.17
+  # - pip=23.2.1
+  # - python=3.9.17
 #   - readline=8.2=h1a28f6b_0
-  - setuptools=68.0.0
-#   - sqlite=3.41.2=h80987f9_0
-#   - tk=8.6.12=hb8d0fd4_0
-  - wheel=0.38.4
+#   - setuptools=68.0.0
+# #   - sqlite=3.41.2=h80987f9_0
+# #   - tk=8.6.12=hb8d0fd4_0
+#   - wheel=0.38.4
 #   - xz=5.4.2=h80987f9_0
 #   - zlib=1.2.13=h5a0b063_0
   - dlib
@@ -23,4 +23,4 @@ dependencies:
       - opencv_python==4.8.0.74
       - Pillow==9.5.0
       - streamlit==1.25.0
-prefix: /Users/parthshastri/anaconda3/envs/face_recognition
+prefix: /Users/parthshastri/anaconda3/envs/face_recognition_test
