@@ -1,7 +1,7 @@
 name: face_recognition
 channels:
   - defaults
-  -conda-forge
+  - conda-forge
 dependencies:
 #   - ca-certificates=2023.05.30=hca03da5_0
 #   - libcxx=14.0.6=h848a8c0_0
