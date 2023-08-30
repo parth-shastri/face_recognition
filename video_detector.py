@@ -1,6 +1,6 @@
 import cv2
 import os
-from time import sleep
+from time import perf_counter
 import datetime
 import config
 import numpy as np
@@ -21,7 +21,8 @@ class VideoReader:
         save_every=5,
         detect_faces=False,
         identify_faces=False,
-        save_path="./output"
+        save_path="./output",
+        resolution=(360, 720)
     ):
         self.source = source
         # self.fps = fps
@@ -29,6 +30,7 @@ class VideoReader:
         self.detect_faces = detect_faces
         self.identify_faces = identify_faces
         self.save_path = save_path
+        self.resolution = resolution   # (H, W)
 
         if self.identify_faces and self.detect_faces:
             # initialize the universal encoding buffer
@@ -63,6 +65,10 @@ class VideoReader:
         # cap.set(cv2.CAP_PROP_FPS, self.fps)
         self.fps = cap.get(cv2.CAP_PROP_FPS)
         print("Video FPS : {}".format(cap.get(cv2.CAP_PROP_FPS)))
+        print("Video Resolution (H, W): {}".format(self.resolution))
+
+        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, self.resolution[0])
+        cap.set(cv2.CAP_PROP_FRAME_WIDTH, self.resolution[1])
 
         if not cap.isOpened():
             print("Cannot Open source")
@@ -77,7 +83,9 @@ class VideoReader:
                 break
 
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            print(gray.shape)
 
+            detection_time_start = perf_counter()
             if self.detect_faces:
                 # perform face detection and draw the bbox on the frame
                 try:
@@ -92,6 +100,10 @@ class VideoReader:
                     top, right, bottom, left = location
                     cv2.rectangle(frame, [left, top], [right, bottom], (0, 255, 0), 2)
                     face_crops.append(frame[top:bottom, left:right, ...])
+            
+            print("time for face_detection: {}s".format(perf_counter() - detection_time_start))
+
+            id_time_start = perf_counter()
 
             if self.identify_faces:
 
@@ -205,24 +217,14 @@ class VideoReader:
                                 cv2.putText(frame, name, (left, bottom + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 3)
 
                                 # update the count and keep the Running Mean of the id-encoding
+                                # if and only if the prediction is highly confident
+                                # if dist[sim_mask] <= 0.3:
                                 self.identity_encodings[name] *= self.count_id_enc[name]
                                 self.identity_encodings[name] += cur_encoding
                                 self.identity_encodings[name] /= (self.count_id_enc[name] + 1 )
                                 self.count_id_enc[name] += 1
 
-            # if self.save_frames and (frame_count % (self.save_every * self.fps) == 0):
-            #     print("Saving at frame number: {}".format(frame_count))
-            #     for i, crop in enumerate(face_crops):
-            #         name = "person_{}_{}.png".format(
-            #             frame_count, datetime.datetime.now().strftime("%H%M%S")
-            #         )
-            #         cv2.imwrite(
-            #             os.path.join(
-            #                 config.IMAGES_FROM_VIDEO,
-            #                 name,
-            #             ),
-            #             img=crop,
-            #         )
+            print("time taken to id faces : {}s".format(perf_counter() - id_time_start))
 
             if not on_streamlit:
                 cv2.imshow("frame", frame)
